@@ -1,0 +1,203 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block title %}How It Works | PixWeight{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+  <!-- Hero Section -->
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold mb-3">
+      <span class="gradient-text">How PixWeight Works</span>
+    </h1>
+    <p class="lead text-muted">Understanding AI-powered weight estimation</p>
+  </div>
+
+  <!-- Pipeline Visualization -->
+  <div class="card mb-4">
+    <div class="card-body p-4">
+      <h2 class="h4 fw-bold mb-4">Estimation Pipeline</h2>
+      
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="text-center p-4 rounded" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
+            <div class="mb-3" style="font-size: 2rem;">📤</div>
+            <h3 class="h6 fw-bold">1. Upload Image</h3>
+            <p class="small text-muted mb-0">You upload an image of the object you want to weigh</p>
+          </div>
+        </div>
+        
+        <div class="col-md-3">
+          <div class="text-center p-4 rounded" style="background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);">
+            <div class="mb-3" style="font-size: 2rem;">🔍</div>
+            <h3 class="h6 fw-bold">2. Object Identification</h3>
+            <p class="small text-muted mb-0">Vision AI analyzes the image and identifies the object</p>
+          </div>
+        </div>
+        
+        <div class="col-md-3">
+          <div class="text-center p-4 rounded" style="background: linear-gradient(135deg, rgba(244, 114, 182, 0.1) 0%, rgba(251, 146, 60, 0.1) 100%);">
+            <div class="mb-3" style="font-size: 2rem;">❓</div>
+            <h3 class="h6 fw-bold">3. Smart Questions</h3>
+            <p class="small text-muted mb-0">AI generates context-specific questions to improve accuracy</p>
+          </div>
+        </div>
+        
+        <div class="col-md-3">
+          <div class="text-center p-4 rounded" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 146, 60, 0.1) 100%);">
+            <div class="mb-3" style="font-size: 2rem;">⚖️</div>
+            <h3 class="h6 fw-bold">4. Weight Estimate</h3>
+            <p class="small text-muted mb-0">AI calculates weight with confidence range and additional insights</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category-Specific Features -->
+  <div class="card mb-4">
+    <div class="card-body p-4">
+      <h2 class="h4 fw-bold mb-4">Category-Specific Intelligence</h2>
+      <p class="text-muted mb-4">PixWeight adapts its analysis based on what you're weighing:</p>
+      
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="p-3 rounded" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(52, 211, 153, 0.05) 100%); border-left: 4px solid #10b981;">
+            <h3 class="h6 fw-bold mb-2" style="color: #10b981;">🍎 Food & Produce</h3>
+            <ul class="small text-muted mb-0">
+              <li>Automatic calorie calculation</li>
+              <li>Nutritional breakdown (protein, carbs, fat, fiber)</li>
+              <li>Portion size assessment</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="p-3 rounded" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%); border-left: 4px solid #3b82f6;">
+            <h3 class="h6 fw-bold mb-2" style="color: #3b82f6;">📦 Packages & Parcels</h3>
+            <ul class="small text-muted mb-0">
+              <li>Volumetric weight calculation</li>
+              <li>Shipping cost estimates (USPS, FedEx, UPS, DHL)</li>
+              <li>Dimensional weight analysis</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="p-3 rounded" style="background: linear-gradient(135deg, rgba(251, 146, 60, 0.05) 0%, rgba(251, 191, 36, 0.05) 100%); border-left: 4px solid #fb923c;">
+            <h3 class="h6 fw-bold mb-2" style="color: #fb923c;">🐕 Pets</h3>
+            <ul class="small text-muted mb-0">
+              <li>Breed-specific health assessment</li>
+              <li>Ideal weight range comparison</li>
+              <li>Personalized health recommendations</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="p-3 rounded" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(167, 139, 250, 0.05) 100%); border-left: 4px solid #8b5cf6;">
+            <h3 class="h6 fw-bold mb-2" style="color: #8b5cf6;">👤 People (Body Composition)</h3>
+            <ul class="small text-muted mb-0">
+              <li>BMI calculation and categorization</li>
+              <li>Body fat percentage estimation</li>
+              <li>Ideal weight range suggestions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technology Stack -->
+  <div class="card mb-4">
+    <div class="card-body p-4">
+      <h2 class="h4 fw-bold mb-4">Technology Behind PixWeight</h2>
+      
+      <div class="row g-3">
+        <div class="col-md-6">
+          <h3 class="h6 fw-semibold mb-2">Vision AI</h3>
+          <p class="small text-muted">Advanced computer vision models analyze images to identify objects, understand context, and detect relevant visual features.</p>
+        </div>
+        
+        <div class="col-md-6">
+          <h3 class="h6 fw-semibold mb-2">Large Language Models</h3>
+          <p class="small text-muted">State-of-the-art LLMs generate intelligent questions and calculate weight estimates based on visual and contextual information.</p>
+        </div>
+        
+        <div class="col-md-6">
+          <h3 class="h6 fw-semibold mb-2">Category Detection</h3>
+          <p class="small text-muted">Automatic classification system identifies object types and applies specialized analysis logic for accurate results.</p>
+        </div>
+        
+        <div class="col-md-6">
+          <h3 class="h6 fw-semibold mb-2">Reference Database</h3>
+          <p class="small text-muted">Comprehensive databases of nutrition facts, breed standards, and shipping rates enhance estimation accuracy.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accuracy & Limitations -->
+  <div class="card mb-4">
+    <div class="card-body p-4">
+      <h2 class="h4 fw-bold mb-3">Understanding Accuracy</h2>
+      
+      <div class="alert alert-info mb-3">
+        <strong>Confidence Levels:</strong> Each estimate includes a confidence percentage and weight range. Higher confidence means more reliable estimates.
+      </div>
+      
+      <h3 class="h6 fw-semibold mb-2">What Improves Accuracy:</h3>
+      <ul class="text-muted small mb-3">
+        <li>Clear, well-lit images</li>
+        <li>Reference objects in frame (coins, rulers, etc.)</li>
+        <li>Multiple angles or context clues</li>
+        <li>Accurate answers to AI-generated questions</li>
+      </ul>
+      
+      <h3 class="h6 fw-semibold mb-2">Limitations:</h3>
+      <ul class="text-muted small mb-0">
+        <li>AI estimates are approximate and educational</li>
+        <li>Not suitable for legal, medical, or certified purposes</li>
+        <li>Accuracy varies based on object type and image quality</li>
+        <li>Always verify with actual measurements for critical applications</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="card mb-4">
+    <div class="card-body p-4">
+      <h2 class="h4 fw-bold mb-4">Frequently Asked Questions</h2>
+      
+      <div class="mb-3">
+        <h3 class="h6 fw-semibold">How accurate is PixWeight?</h3>
+        <p class="small text-muted mb-0">Accuracy varies by object type and image quality. Most estimates are within 10-30% of actual weight. Complex or unusual objects may have lower accuracy.</p>
+      </div>
+      
+      <div class="mb-3">
+        <h3 class="h6 fw-semibold">Can I use this for shipping?</h3>
+        <p class="small text-muted mb-0">While we provide shipping cost estimates, always verify weight with a scale for actual shipping to avoid unexpected charges.</p>
+      </div>
+      
+      <div class="mb-3">
+        <h3 class="h6 fw-semibold">What image formats are supported?</h3>
+        <p class="small text-muted mb-0">JPEG, PNG, and WebP formats up to 10MB. For best results, use high-resolution images with good lighting.</p>
+      </div>
+      
+      <div class="mb-3">
+        <h3 class="h6 fw-semibold">Is my data private?</h3>
+        <p class="small text-muted mb-0">All images and estimates are private to your account. We use your data to improve the service but never share personal information.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="text-center py-4">
+    <a href="/dashboard/" class="btn btn-primary btn-lg">
+      <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+      </svg>
+      Try It Now
+    </a>
+  </div>
+</div>
+{% endblock %}

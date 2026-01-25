@@ -1,0 +1,217 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block title %}Login | PixWeight{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-75 py-4">
+  <div class="col-md-7 col-lg-6 col-xl-5">
+    <div class="text-center mb-4 fade-in">
+      <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 64px; height: 64px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+      </div>
+      <h1 class="h3 fw-bold mb-1">Welcome Back</h1>
+      <p class="text-muted">Sign in to continue to PixWeight</p>
+    </div>
+    
+    <div class="card fade-in" style="animation-delay: 0.1s;">
+      <div class="card-body p-4">
+        <div class="alert alert-danger d-none" id="errorBox"></div>
+        <div class="alert alert-success d-none" id="successBox"></div>
+
+        <form id="loginForm">
+          <div class="mb-3">
+            <label class="form-label">
+              <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Username
+            </label>
+            <input class="form-control form-control-lg" name="username" placeholder="Enter your username" required autofocus>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">
+              <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              Password
+            </label>
+            <input class="form-control form-control-lg" name="password" type="password" placeholder="Enter your password" required>
+            <div class="form-text text-end mt-2">
+              <a href="#" class="text-decoration-none" style="color: var(--primary-color);" id="forgotPasswordLink">
+                <svg class="me-1" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Forgot password?
+              </a>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-lg w-100" type="submit" id="btnLogin">
+            <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            Sign In
+          </button>
+        </form>
+
+        <div class="divider"></div>
+        
+        <div class="text-center">
+          <span class="text-muted">Don't have an account?</span>
+          <a href="/register/" class="fw-semibold ms-1" style="color: var(--primary-color);">Create one</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-4 fade-in" style="animation-delay: 0.2s;">
+      <a href="/" class="text-muted small text-decoration-none">
+        <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Forgot Password Modal (No Bootstrap JS dependency) -->
+<div class="custom-modal-overlay" id="forgotPasswordOverlay">
+  <div class="custom-modal" id="forgotPasswordModal">
+    <div class="custom-modal-header">
+      <h5 class="custom-modal-title" id="modalTitle">
+        <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span id="modalTitleText">Forgot Password</span>
+      </h5>
+      <button type="button" class="custom-modal-close" id="closeModalBtn" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="custom-modal-body">
+      <div class="alert alert-danger d-none" id="forgotErrorBox"></div>
+      <div class="alert alert-success d-none" id="forgotSuccessBox"></div>
+      
+      <!-- Step 1: Find Account -->
+      <div id="stepFindAccount">
+        <p class="text-muted mb-3">Enter your username or email address to find your account.</p>
+        
+        <form id="forgotPasswordForm">
+          <div class="mb-3">
+            <label class="form-label">
+              <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Username or Email
+            </label>
+            <input class="form-control form-control-lg" name="identifier" id="forgotIdentifier" placeholder="Enter username or email" required>
+          </div>
+          
+          <button class="btn btn-primary btn-lg w-100" type="submit" id="btnFindAccount">
+            <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            Find Account
+          </button>
+        </form>
+      </div>
+      
+      <!-- Step 2: Reset Password (Hidden initially) -->
+      <div id="stepResetPassword" class="d-none">
+        <div class="text-center mb-4">
+          <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 56px; height: 56px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 50%;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <h6 class="fw-bold mb-1">Account Found!</h6>
+          <p class="text-muted small mb-0">Username: <strong id="foundUsername"></strong></p>
+          <p class="text-muted small" id="foundEmailRow">Email: <span id="foundEmail"></span></p>
+        </div>
+        
+        <form id="resetPasswordForm">
+          <input type="hidden" id="resetUsername" name="username">
+          
+          <div class="mb-3">
+            <label class="form-label">
+              <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              New Password
+            </label>
+            <input class="form-control form-control-lg" name="new_password" id="newPassword" type="password" placeholder="Enter new password" minlength="8" required>
+            <div class="form-text">
+              <svg class="me-1" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              Minimum 8 characters
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="form-label">
+              <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Confirm Password
+            </label>
+            <input class="form-control form-control-lg" name="confirm_password" id="confirmPassword" type="password" placeholder="Confirm new password" minlength="8" required>
+          </div>
+          
+          <button class="btn btn-success btn-lg w-100" type="submit" id="btnResetPassword">
+            <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Reset Password
+          </button>
+          
+          <button type="button" class="btn btn-outline-secondary w-100 mt-2" id="btnBackToFind">
+            <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="custom-modal-footer" id="modalFooter">
+      <small class="text-muted">
+        <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        Remember your credentials? <a href="#" class="text-decoration-none" style="color: var(--primary-color);" id="backToLoginLink">Sign in</a>
+      </small>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'frontend/js/login.js' %}"></script>
+{% endblock %}
