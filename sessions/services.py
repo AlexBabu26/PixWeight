@@ -110,6 +110,182 @@ class ImageValidationError(RuntimeError):
     """Raised when image validation fails."""
     pass
 
+
+# ============================================
+# CATEGORY DETECTION & SPECIFIC QUESTIONS
+# ============================================
+
+CATEGORY_KEYWORDS = {
+    "food": [
+        "apple", "banana", "fruit", "vegetable", "meat", "chicken", "fish", "bread", 
+        "food", "meal", "sandwich", "burger", "pizza", "salad", "rice", "pasta",
+        "egg", "cheese", "milk", "yogurt", "beef", "pork", "turkey", "salmon",
+        "potato", "tomato", "carrot", "orange", "grape", "strawberry", "mango",
+        "pineapple", "watermelon", "avocado", "broccoli", "lettuce", "cucumber",
+        "onion", "pepper", "spinach", "cake", "cookie", "chocolate"
+    ],
+    "package": [
+        "box", "package", "parcel", "carton", "envelope", "container", "crate",
+        "shipment", "mail", "delivery", "shipping box", "cardboard", "packaging"
+    ],
+    "pet": [
+        "dog", "cat", "puppy", "kitten", "rabbit", "bird", "hamster", "guinea pig",
+        "pet", "animal", "canine", "feline", "retriever", "shepherd", "bulldog",
+        "poodle", "beagle", "husky", "chihuahua", "persian", "siamese", "parrot"
+    ],
+    "person": [
+        "person", "man", "woman", "human", "body", "people", "adult", "child",
+        "male", "female", "guy", "girl", "boy", "individual"
+    ]
+}
+
+CATEGORY_SPECIFIC_QUESTIONS = {
+    "food": [
+        {
+            "question": "Is this food raw or cooked?",
+            "answer_type": "select",
+            "options": ["Raw", "Cooked", "Processed"],
+            "required": True
+        },
+        {
+            "question": "Is any portion missing or already eaten?",
+            "answer_type": "select",
+            "options": ["No, it's whole", "Partially eaten", "Just a portion"],
+            "required": True
+        },
+        {
+            "question": "Does it have skin, peel, or shell on?",
+            "answer_type": "boolean",
+            "required": False
+        }
+    ],
+    "package": [
+        {
+            "question": "Estimated length in cm?",
+            "answer_type": "number",
+            "unit": "cm",
+            "required": True
+        },
+        {
+            "question": "Estimated width in cm?",
+            "answer_type": "number",
+            "unit": "cm",
+            "required": True
+        },
+        {
+            "question": "Estimated height in cm?",
+            "answer_type": "number",
+            "unit": "cm",
+            "required": True
+        },
+        {
+            "question": "Is the package fragile?",
+            "answer_type": "boolean",
+            "required": False
+        },
+        {
+            "question": "Shipping destination?",
+            "answer_type": "select",
+            "options": ["Domestic", "International"],
+            "required": False
+        }
+    ],
+    "pet": [
+        {
+            "question": "What breed is this pet? (if known)",
+            "answer_type": "text",
+            "required": False
+        },
+        {
+            "question": "What is the pet's age category?",
+            "answer_type": "select",
+            "options": ["Puppy/Kitten (< 1 year)", "Adult (1-7 years)", "Senior (7+ years)"],
+            "required": True
+        },
+        {
+            "question": "Is the pet male or female?",
+            "answer_type": "select",
+            "options": ["Male", "Female", "Unknown"],
+            "required": False
+        },
+        {
+            "question": "Is the pet spayed or neutered?",
+            "answer_type": "select",
+            "options": ["Yes", "No", "Unknown"],
+            "required": False
+        }
+    ],
+    "person": [
+        {
+            "question": "What is the person's height in cm?",
+            "answer_type": "number",
+            "unit": "cm",
+            "required": True
+        },
+        {
+            "question": "What is the person's age? (optional)",
+            "answer_type": "number",
+            "unit": "years",
+            "required": False
+        },
+        {
+            "question": "Gender?",
+            "answer_type": "select",
+            "options": ["Male", "Female", "Prefer not to say"],
+            "required": False
+        },
+        {
+            "question": "Activity level?",
+            "answer_type": "select",
+            "options": ["Sedentary", "Lightly active", "Moderately active", "Very active"],
+            "required": False
+        }
+    ]
+}
+
+
+def detect_category(object_label: str) -> str:
+    """
+    Detect category from object label using keyword matching.
+    
+    Args:
+        object_label: The identified object label from vision model
+        
+    Returns:
+        Category string: "food", "package", "pet", "person", or "general"
+    """
+    if not object_label:
+        return "general"
+    
+    label_lower = object_label.lower()
+    
+    # Check each category's keywords
+    for category, keywords in CATEGORY_KEYWORDS.items():
+        if any(keyword in label_lower for keyword in keywords):
+            return category
+    
+    return "general"
+
+
+def get_category_specific_questions(category: str, base_questions: list) -> list:
+    """
+    Append category-specific questions to base questions from vision model.
+    
+    Args:
+        category: Detected category
+        base_questions: Questions generated by vision model
+        
+    Returns:
+        Combined list of base + category-specific questions
+    """
+    # Get category-specific questions
+    category_questions = CATEGORY_SPECIFIC_QUESTIONS.get(category, [])
+    
+    # Combine base questions with category-specific ones
+    # Limit total to 12 questions max
+    all_questions = base_questions + category_questions
+    return all_questions[:12]
+
 def validate_image_content(image_data_url: str) -> Dict[str, Any]:
     """
     Validate image content against quality rules using vision model.
@@ -235,8 +411,16 @@ def identify_object_and_questions(image_data_url: str, user_hint: str = "") -> D
     out.setdefault("questions", [])
     if not isinstance(out["questions"], list):
         out["questions"] = []
-    # enforce limit
-    out["questions"] = out["questions"][:8]
+    
+    # Detect category from object label
+    object_label = out.get("object_label", "")
+    category = detect_category(object_label)
+    out["category"] = category
+    
+    # Add category-specific questions
+    base_questions = out["questions"][:8]  # Limit base questions
+    out["questions"] = get_category_specific_questions(category, base_questions)
+    
     return out
 
 def _to_grams(value: float, unit: str) -> float:
