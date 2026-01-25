@@ -80,6 +80,48 @@
 
       <div class="divider"></div>
 
+      <!-- Search and Filter -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <input type="text" class="form-control" id="searchInput" placeholder="Search by object name...">
+        </div>
+        <div class="col-md-2">
+          <select class="form-select" id="categoryFilter">
+            <option value="">All Categories</option>
+            <option value="food">Food</option>
+            <option value="package">Package</option>
+            <option value="pet">Pet</option>
+            <option value="person">Person</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select" id="statusFilter">
+            <option value="">All Status</option>
+            <option value="ESTIMATED">Completed</option>
+            <option value="QUESTIONS_ASKED">Pending</option>
+            <option value="IN_PROGRESS">In Progress</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select" id="sortFilter">
+            <option value="date">Sort by Date</option>
+            <option value="confidence">Sort by Confidence</option>
+            <option value="weight">Sort by Weight</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-success w-100" id="exportBtn">
+            <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Export CSV
+          </button>
+        </div>
+      </div>
+
       <!-- Table -->
       <div class="table-responsive">
         <table class="table align-middle mb-0">
@@ -131,6 +173,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'frontend/js/export.js' %}"></script>
 <script src="{% static 'frontend/js/history.js' %}"></script>
 <script>
 // Enhanced table row rendering

@@ -24,3 +24,6 @@ class HistoryView(TemplateView):
 class ProfileView(TemplateView):
     template_name = "frontend/profile.html"
 
+class HowItWorksView(TemplateView):
+    template_name = "frontend/how_it_works.html"
+
