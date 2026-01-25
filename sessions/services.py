@@ -292,14 +292,18 @@ def validate_image_content(image_data_url: str) -> Dict[str, Any]:
     
     Rules checked:
     - For person: Full Body Clear View, Minimal Clothing, Standard standing pose, Plain Background
-    - For object: Reference Object Inclusion, Visibility and Clarity, Uniform Lighting, 
-      Plain Contrasting Background, Sharp Focus
+    - For single objects: Reference Object Inclusion (optional but recommended), Visibility and Clarity, 
+      Uniform Lighting, Plain Contrasting Background, Sharp Focus
+    - For composite objects (food items, multiple items): Visibility and Clarity, Sharp Focus
+      (Reference objects and plain backgrounds are optional for composite items)
     
     Returns validation result dict with 'valid' (bool) and 'issues' (list of strings).
     Raises ImageValidationError if validation fails.
     """
     system = (
         "You validate images for weight estimation. Check if the image meets quality requirements. "
+        "Be lenient with composite objects (like food items with multiple ingredients, salads, meals). "
+        "For composite objects, focus on visibility and clarity rather than requiring reference objects or plain backgrounds. "
         "Return ONLY valid JSON (no markdown)."
     )
 
@@ -312,18 +316,32 @@ def validate_image_content(image_data_url: str) -> Dict[str, Any]:
                 "Standard standing pose - person should be in a standard standing position",
                 "Plain Background - background should be simple and uniform"
             ],
-            "object": [
-                "Reference Object Inclusion - image should include a reference object (coin, ruler, etc.)",
+            "single_object": [
+                "Reference Object Inclusion - image should include a reference object (coin, ruler, etc.) - OPTIONAL but recommended",
                 "Visibility and Clarity - object should be clearly visible and distinct",
-                "Uniform Lighting - lighting should be even across the image",
-                "Plain Contrasting Background - background should be plain and contrast with object",
+                "Uniform Lighting - lighting should be even across the image - OPTIONAL",
+                "Plain Contrasting Background - background should be plain and contrast with object - OPTIONAL",
                 "Sharp Focus - image should be in sharp focus"
+            ],
+            "composite_object": [
+                "Visibility and Clarity - main object(s) should be clearly visible",
+                "Sharp Focus - image should be in sharp focus",
+                "Multiple items are acceptable - composite objects like salads, meals, or collections are valid",
+                "Reference objects are OPTIONAL - not required for composite objects",
+                "Plain background is OPTIONAL - natural backgrounds are acceptable"
             ]
         },
+        "instructions": [
+            "First, determine if the image contains a single object, composite object (multiple items together like a salad), or a person",
+            "For composite objects (food items with multiple ingredients, salads, meals, collections), use 'composite_object' rules",
+            "For single distinct objects, use 'single_object' rules",
+            "Be lenient - only reject images that are truly unusable (blurry, too dark, completely obscured)",
+            "Accept images with multiple objects if they form a cohesive whole (like a salad with ingredients)"
+        ],
         "output_schema": {
-            "image_type": "person|object|unknown",
+            "image_type": "person|single_object|composite_object|unknown",
             "valid": "boolean",
-            "issues": ["array of strings describing validation failures"],
+            "issues": ["array of strings describing validation failures - only include critical issues"],
             "summary": "short string summarizing validation result"
         }
     }
@@ -347,6 +365,16 @@ def validate_image_content(image_data_url: str) -> Dict[str, Any]:
         out = _call_with_json_retry(payload, retries=2)
         valid = bool(out.get("valid", False))
         issues = out.get("issues", [])
+        image_type = out.get("image_type", "unknown")
+        
+        # For composite objects, be more lenient - only reject if truly unusable
+        if image_type == "composite_object":
+            # Only reject if there are critical issues (blurry, too dark, completely obscured)
+            critical_issues = [issue for issue in issues if any(keyword in issue.lower() for keyword in 
+                ["blurry", "too dark", "obscured", "cannot see", "unusable", "completely hidden"])]
+            if not critical_issues and issues:
+                # Non-critical issues for composite objects - allow through
+                valid = True
         
         if not valid and issues:
             issues_str = "; ".join(issues)

@@ -162,36 +162,6 @@
 {% block scripts %}
 <script src="{% static 'frontend/js/dashboard.js' %}"></script>
 <script>
-// Drag and drop enhancement
-const uploadZone = document.getElementById('uploadZone');
-const imageInput = document.getElementById('imageInput');
-
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-  uploadZone.addEventListener(eventName, (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  });
-});
-
-['dragenter', 'dragover'].forEach(eventName => {
-  uploadZone.addEventListener(eventName, () => {
-    uploadZone.classList.add('dragover');
-  });
-});
-
-['dragleave', 'drop'].forEach(eventName => {
-  uploadZone.addEventListener(eventName, () => {
-    uploadZone.classList.remove('dragover');
-  });
-});
-
-uploadZone.addEventListener('drop', (e) => {
-  const files = e.dataTransfer.files;
-  if (files.length) {
-    imageInput.files = files;
-  }
-});
-
 // Logout button handler
 document.addEventListener('DOMContentLoaded', function() {
   const btnLogoutDashboard = document.getElementById('btnLogoutDashboard');

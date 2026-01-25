@@ -268,25 +268,48 @@ document.addEventListener("DOMContentLoaded", async () => {
 function setupFeedbackForm(estimateId) {
   let selectedRating = null;
   
-  // Rating button selection
-  document.querySelectorAll('.rating-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      // Remove active class from all buttons
+  // Use event delegation on the feedback form container for better reliability
+  const feedbackForm = document.getElementById('feedbackForm');
+  const submitButton = document.getElementById('submitFeedback');
+  
+  if (!feedbackForm) {
+    console.error('Feedback form not found');
+    return;
+  }
+  
+  if (!submitButton) {
+    console.error('Submit button not found');
+    return;
+  }
+  
+  // Rating button selection using event delegation
+  feedbackForm.addEventListener('click', function(e) {
+    // Check if clicked element is a rating button
+    const ratingBtn = e.target.closest('.rating-btn');
+    if (ratingBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Remove active class from all rating buttons
       document.querySelectorAll('.rating-btn').forEach(b => {
         b.classList.remove('btn-primary');
         b.classList.add('btn-outline-secondary');
       });
       
       // Add active class to clicked button
-      this.classList.remove('btn-outline-secondary');
-      this.classList.add('btn-primary');
+      ratingBtn.classList.remove('btn-outline-secondary');
+      ratingBtn.classList.add('btn-primary');
       
-      selectedRating = parseInt(this.getAttribute('data-rating'));
-    });
+      selectedRating = parseInt(ratingBtn.getAttribute('data-rating'));
+      console.log('Rating selected:', selectedRating);
+    }
   });
   
   // Submit feedback
-  document.getElementById('submitFeedback').addEventListener('click', async function() {
+  submitButton.addEventListener('click', async function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
     const actualWeight = parseFloat(document.getElementById('actualWeight').value);
     const notes = document.getElementById('feedbackNotes').value.trim();
     

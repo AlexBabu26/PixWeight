@@ -1781,10 +1781,17 @@ body.custom-modal-open footer {
 /* Rating Buttons */
 .rating-btn {
   transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  pointer-events: auto;
 }
 
 .rating-btn:hover {
   transform: scale(1.05);
+}
+
+.rating-btn:active {
+  transform: scale(0.95);
 }
 
 .rating-btn.btn-primary {

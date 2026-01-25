@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const uploadZone = document.getElementById("uploadZone");
   const imageInput = document.getElementById("imageInput");
   
+  if (!form || !uploadZone || !imageInput) {
+    console.error("Required elements not found");
+    return;
+  }
+  
   let selectedFile = null;
 
   // Drag and drop functionality
@@ -45,9 +50,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Click to upload
-  uploadZone.addEventListener('click', () => {
-    imageInput.click();
+  // Click to upload - make sure it works even after preview is shown
+  uploadZone.addEventListener('click', (e) => {
+    // Don't trigger if clicking on the remove button or inside preview image
+    if (e.target.closest('#removeImage') || e.target.tagName === 'IMG') {
+      return;
+    }
+    // Get the current file input (might be recreated)
+    const currentInput = document.getElementById('imageInput');
+    if (currentInput) {
+      currentInput.click();
+    }
   });
 
   imageInput.addEventListener('change', (e) => {
@@ -71,6 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Ensure selectedFile is set
+    selectedFile = file;
+    console.log('File selected:', file.name, 'Size:', file.size, 'Type:', file.type);
+
     clearAlert(errorBox);
 
     // Show preview
@@ -82,6 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showPreview(dataUrl, filename) {
+    // Keep the file input in the form but hidden
+    const currentInput = document.getElementById('imageInput');
+    
     uploadZone.innerHTML = `
       <div class="image-preview">
         <img src="${dataUrl}" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px; margin-bottom: 1rem;">
@@ -96,7 +116,27 @@ document.addEventListener("DOMContentLoaded", () => {
           </button>
         </div>
       </div>
+      <input type="file" name="image" accept="image/*" id="imageInput" style="position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;">
     `;
+
+    // Re-attach file input change handler
+    const newImageInput = document.getElementById('imageInput');
+    if (newImageInput) {
+      // Ensure it's part of the form
+      if (!form.contains(newImageInput)) {
+        form.appendChild(newImageInput);
+      }
+      
+      // Remove required attribute since we validate manually
+      newImageInput.removeAttribute('required');
+      
+      newImageInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          selectedFile = e.target.files[0];
+          handleFileSelect(selectedFile);
+        }
+      });
+    }
 
     document.getElementById('removeImage').addEventListener('click', (e) => {
       e.stopPropagation();
@@ -106,7 +146,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function resetUploadZone() {
     selectedFile = null;
-    imageInput.value = '';
+    const currentInput = document.getElementById('imageInput');
+    if (currentInput) {
+      currentInput.value = '';
+    }
+    
     uploadZone.innerHTML = `
       <div class="upload-icon mx-auto">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -117,8 +161,22 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <h5 class="fw-semibold mt-3 mb-1">Drop your image here</h5>
       <p class="text-muted mb-3">or click to browse from your device</p>
-      <input class="form-control" type="file" name="image" accept="image/*" required id="imageInput">
+      <input class="form-control" type="file" name="image" accept="image/*" id="imageInput">
     `;
+    
+    // Re-attach event listeners after resetting
+    const newImageInput = document.getElementById('imageInput');
+    if (newImageInput) {
+      // Add required attribute back
+      newImageInput.setAttribute('required', 'required');
+      
+      newImageInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          selectedFile = e.target.files[0];
+          handleFileSelect(selectedFile);
+        }
+      });
+    }
   }
 
   form.addEventListener("submit", async (e) => {
@@ -126,12 +184,40 @@ document.addEventListener("DOMContentLoaded", () => {
     clearAlert(errorBox);
     clearAlert(infoBox);
 
-    if (!selectedFile) {
+    // Try to get file from selectedFile first (this should always be set when file is selected)
+    let fileToUpload = selectedFile;
+    
+    // Debug logging (remove in production)
+    console.log('Form submit - selectedFile:', selectedFile);
+    
+    // If selectedFile is not set, try to get from form
+    if (!fileToUpload) {
+      // Try multiple ways to access the file input
+      const formImageInput = form.querySelector('input[name="image"]') || 
+                             form.querySelector('#imageInput') ||
+                             document.getElementById('imageInput');
+      
+      console.log('Form submit - formImageInput:', formImageInput);
+      
+      if (formImageInput && formImageInput.files && formImageInput.files.length > 0) {
+        fileToUpload = formImageInput.files[0];
+        console.log('Form submit - got file from input:', fileToUpload);
+      }
+    }
+
+    if (!fileToUpload) {
       setAlert(errorBox, "Please select an image file.");
+      console.error('No file found for upload');
       return;
     }
 
-    const user_hint = (form.user_hint.value || "").trim();
+    // Validate file one more time
+    if (!fileToUpload.type.startsWith('image/')) {
+      setAlert(errorBox, "Please select a valid image file.");
+      return;
+    }
+
+    const user_hint = (form.user_hint?.value || form.querySelector('input[name="user_hint"]')?.value || "").trim();
 
     btn.disabled = true;
     show(loading);
@@ -140,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       // 1) Upload image
       const uploadFd = new FormData();
-      uploadFd.append("image", selectedFile);
+      uploadFd.append("image", fileToUpload);
 
       const uploaded = await API.request("/media/upload/", {
         method: "POST",
@@ -156,6 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       window.location.href = `/session/${session.id}/questions/`;
     } catch (err) {
+      console.error('Upload error:', err);
       setAlert(errorBox, err.message || "Failed to start session.");
       hide(loading);
       btn.disabled = false;
