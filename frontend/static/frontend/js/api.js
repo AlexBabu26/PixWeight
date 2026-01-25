@@ -128,6 +128,26 @@ const API = {
         body: JSON.stringify(payload),
       }, { auth: true });
     },
+
+    async forgotPassword(identifier) {
+      return API.request("/accounts/forgot-password/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier }),
+      }, { auth: false });
+    },
+
+    async resetPassword(username, newPassword, confirmPassword) {
+      return API.request("/accounts/reset-password/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          username, 
+          new_password: newPassword, 
+          confirm_password: confirmPassword 
+        }),
+      }, { auth: false });
+    },
   }
 };
 

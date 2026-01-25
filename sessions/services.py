@@ -25,7 +25,7 @@ OPENROUTER_VISION_MODEL = os.getenv("OPENROUTER_VISION_MODEL", "qwen/qwen2.5-vl-
 OPENROUTER_TEXT_MODEL = os.getenv("OPENROUTER_TEXT_MODEL", "openai/gpt-4o-mini")
 
 APP_REFERER = os.getenv("OPENROUTER_APP_REFERER", "http://localhost:8000")
-APP_TITLE = os.getenv("OPENROUTER_APP_TITLE", "Weight Estimator")
+APP_TITLE = os.getenv("OPENROUTER_APP_TITLE", "PixWeight")
 
 # Determine which models to use based on provider
 if LLM_PROVIDER == "groq":

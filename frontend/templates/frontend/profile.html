@@ -1,44 +1,197 @@
 {% extends "frontend/base.html" %}
 {% load static %}
-{% block title %}Profile | Weight Estimator{% endblock %}
+{% block title %}Profile | PixWeight{% endblock %}
 
 {% block content %}
-<div class="row g-3">
-  <div class="col-lg-6">
-    <div class="card shadow-sm">
-      <div class="card-body p-4">
-        <h1 class="h4 mb-3">Profile</h1>
-
-        <div class="alert alert-danger d-none" id="errorBox"></div>
-        <div class="alert alert-success d-none" id="successBox"></div>
-
-        <div class="mb-2 text-muted small">Username</div>
-        <div class="mb-3" id="username"></div>
-
-        <div class="mb-2 text-muted small">Email</div>
-        <div class="mb-3" id="email"></div>
-
-        <form id="profileForm">
-          <div class="mb-3">
-            <label class="form-label">Display name</label>
-            <input class="form-control" name="display_name" id="displayName">
+<div class="fade-in">
+  <!-- Profile Header -->
+  <div class="card mb-4" style="background: var(--primary-gradient); border: none;">
+    <div class="card-body p-4 text-white">
+      <div class="row align-items-center">
+        <div class="col-auto">
+          <div class="profile-avatar">
+            <span class="profile-avatar-text" id="avatarInitial">?</span>
           </div>
-          <button class="btn btn-primary" type="submit">Save</button>
-        </form>
+        </div>
+        <div class="col">
+          <h1 class="h4 fw-bold mb-1" id="profileName">Loading...</h1>
+          <p class="mb-0 opacity-75">
+            <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Member
+          </p>
+        </div>
+        <div class="col-auto d-none d-md-block">
+          <a href="/dashboard/" class="btn btn-light">
+            <svg class="me-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="9"></rect>
+              <rect x="14" y="3" width="7" height="5"></rect>
+              <rect x="14" y="12" width="7" height="9"></rect>
+              <rect x="3" y="16" width="7" height="5"></rect>
+            </svg>
+            Go to Dashboard
+          </a>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="col-lg-6">
-    <div class="card shadow-sm">
-      <div class="card-body p-4">
-        <h2 class="h5">Disclaimer & privacy</h2>
-        <ul class="text-muted mb-0">
-          <li>This is an estimation tool; results may be inaccurate.</li>
-          <li>Do not use it for certified shipping or legal measurement requirements.</li>
-          <li>Images and session data are stored in your local database (SQLite) unless you change storage.</li>
-          <li>LLM calls send prompts to OpenRouter; do not upload sensitive images.</li>
-        </ul>
+  <div class="row g-4">
+    <!-- Profile Settings -->
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-body p-4">
+          <h2 class="h5 fw-bold mb-4">
+            <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            Profile Settings
+          </h2>
+
+          <div class="alert alert-danger d-none" id="errorBox"></div>
+          <div class="alert alert-success d-none" id="successBox"></div>
+
+          <!-- Account Info -->
+          <div class="mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);">
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <div class="small text-muted mb-1">
+                  <svg class="me-1" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  Username
+                </div>
+                <div class="fw-semibold" id="username">Loading...</div>
+              </div>
+              <div class="col-sm-6">
+                <div class="small text-muted mb-1">
+                  <svg class="me-1" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                  Email
+                </div>
+                <div class="fw-semibold" id="email">Not provided</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Edit Form -->
+          <form id="profileForm">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Display Name
+              </label>
+              <input class="form-control form-control-lg" name="display_name" id="displayName" placeholder="Enter your display name">
+              <div class="form-text">This name will be shown in your profile</div>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              <svg class="me-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              Save Changes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy & Security -->
+    <div class="col-lg-6">
+      <div class="card settings-card mb-4">
+        <div class="card-body p-4">
+          <h2 class="h5 fw-bold mb-4">
+            <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#11998e" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Privacy & Security
+          </h2>
+          
+          <ul class="list-unstyled mb-0">
+            <li class="d-flex align-items-start gap-3 mb-3">
+              <div class="d-flex align-items-center justify-content-center flex-shrink-0 mt-1" style="width: 32px; height: 32px; background: rgba(17, 153, 142, 0.1); border-radius: 8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#11998e" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <div>
+                <div class="fw-semibold">Local Data Storage</div>
+                <div class="small text-muted">Images and session data are stored in your local database (SQLite) unless you change storage settings.</div>
+              </div>
+            </li>
+            <li class="d-flex align-items-start gap-3 mb-3">
+              <div class="d-flex align-items-center justify-content-center flex-shrink-0 mt-1" style="width: 32px; height: 32px; background: rgba(17, 153, 142, 0.1); border-radius: 8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#11998e" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <div>
+                <div class="fw-semibold">Secure API Calls</div>
+                <div class="small text-muted">LLM calls send prompts to OpenRouter. Avoid uploading sensitive or private images.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.05) 0%, rgba(251, 146, 60, 0.05) 100%); border-left: 4px solid #fbbf24;">
+        <div class="card-body p-4">
+          <h2 class="h5 fw-bold mb-4">
+            <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Important Disclaimer
+          </h2>
+          
+          <ul class="mb-0">
+            <li class="mb-2 text-muted">This is an estimation tool; results may be inaccurate.</li>
+            <li class="mb-2 text-muted">Do not use it for certified shipping or legal measurement requirements.</li>
+            <li class="text-muted">Weight estimates are AI-generated and should be verified with actual scales for critical applications.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="card mt-4">
+    <div class="card-body p-4">
+      <h3 class="h6 fw-bold mb-3">Quick Actions</h3>
+      <div class="d-flex flex-wrap gap-2">
+        <a href="/dashboard/" class="btn btn-outline-primary btn-sm">
+          <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          New Estimation
+        </a>
+        <a href="/history/" class="btn btn-outline-secondary btn-sm">
+          <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          View History
+        </a>
+        <button class="btn btn-outline-danger btn-sm" id="btnLogoutProfile">
+          <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Logout
+        </button>
       </div>
     </div>
   </div>
@@ -47,5 +200,37 @@
 
 {% block scripts %}
 <script src="{% static 'frontend/js/profile.js' %}"></script>
+<script>
+// Set avatar initial and profile name
+document.addEventListener('DOMContentLoaded', function() {
+  const updateAvatar = () => {
+    const usernameEl = document.getElementById('username');
+    const avatarEl = document.getElementById('avatarInitial');
+    const profileNameEl = document.getElementById('profileName');
+    
+    if (usernameEl && usernameEl.textContent && usernameEl.textContent !== 'Loading...') {
+      const initial = usernameEl.textContent.charAt(0).toUpperCase();
+      if (avatarEl) avatarEl.textContent = initial;
+      if (profileNameEl) profileNameEl.textContent = usernameEl.textContent;
+    }
+  };
+  
+  // Watch for username changes
+  const observer = new MutationObserver(updateAvatar);
+  const usernameEl = document.getElementById('username');
+  if (usernameEl) {
+    observer.observe(usernameEl, { childList: true, characterData: true, subtree: true });
+  }
+  
+  // Logout button
+  const btnLogoutProfile = document.getElementById('btnLogoutProfile');
+  if (btnLogoutProfile) {
+    btnLogoutProfile.addEventListener('click', function() {
+      localStorage.removeItem('access');
+      localStorage.removeItem('refresh');
+      window.location.href = '/';
+    });
+  }
+});
+</script>
 {% endblock %}
-

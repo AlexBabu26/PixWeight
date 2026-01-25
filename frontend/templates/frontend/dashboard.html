@@ -1,56 +1,158 @@
 {% extends "frontend/base.html" %}
 {% load static %}
-{% block title %}Dashboard | Weight Estimator{% endblock %}
+{% block title %}Dashboard | PixWeight{% endblock %}
 
 {% block content %}
-<div class="row g-3">
-  <div class="col-lg-7">
-    <div class="card shadow-sm">
-      <div class="card-body p-4">
-        <h1 class="h4 mb-2">New estimation</h1>
-        <p class="text-muted mb-4">
-          Upload an image. The system will identify the main object, ask questions, then estimate its weight.
-        </p>
+<div class="dashboard-header fade-in">
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+    <div>
+      <h1 class="h3 fw-bold mb-1">
+        <span class="gradient-text">New Estimation</span>
+      </h1>
+      <p class="text-muted mb-0">Upload an image and let AI estimate its weight</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="/history/" class="btn btn-outline-primary">
+        <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        View History
+      </a>
+      <button class="btn btn-outline-danger" id="btnLogoutDashboard" type="button">
+        <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Logout
+      </button>
+    </div>
+  </div>
+</div>
 
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card fade-in" style="animation-delay: 0.1s;">
+      <div class="card-body p-4">
         <div class="alert alert-danger d-none" id="errorBox"></div>
         <div class="alert alert-info d-none" id="infoBox"></div>
 
         <form id="startForm">
-          <div class="mb-3">
-            <label class="form-label">Object image</label>
-            <input class="form-control" type="file" name="image" accept="image/*" required>
-            <div class="form-text">Supported: JPEG/PNG/WebP. Size limits apply.</div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">
+              <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              Upload Object Image
+            </label>
+            
+            <div class="upload-zone p-4" id="uploadZone">
+              <div class="upload-icon mx-auto">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <h5 class="fw-semibold mt-3 mb-1">Drop your image here</h5>
+              <p class="text-muted mb-3">or click to browse from your device</p>
+              <input class="form-control" type="file" name="image" accept="image/*" required id="imageInput">
+            </div>
+            
+            <div class="d-flex align-items-center gap-3 mt-2">
+              <span class="badge" style="background: rgba(102, 126, 234, 0.1); color: var(--primary-color);">JPEG</span>
+              <span class="badge" style="background: rgba(17, 153, 142, 0.1); color: #11998e;">PNG</span>
+              <span class="badge" style="background: rgba(244, 114, 182, 0.1); color: #f472b6;">WebP</span>
+              <span class="text-muted small ms-auto">Max 10MB</span>
+            </div>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">User hint (optional)</label>
-            <input class="form-control" type="text" name="user_hint"
-                   placeholder="e.g., 'This is a smartphone', 'It is a small suitcase'">
+          <div class="mb-4">
+            <label class="form-label fw-semibold">
+              <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              Hint <span class="text-muted fw-normal">(optional)</span>
+            </label>
+            <input class="form-control form-control-lg" type="text" name="user_hint"
+                   placeholder="e.g., 'This is a smartphone', 'It's a small suitcase'">
+            <div class="form-text">
+              <svg class="me-1" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              Help the AI identify the object faster
+            </div>
           </div>
 
-          <button class="btn btn-primary" type="submit" id="btnStart">
-            Upload and generate questions
-          </button>
+          <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-primary btn-lg" type="submit" id="btnStart">
+              <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              Analyze Image
+            </button>
 
-          <span class="ms-2 d-none" id="loading">
-            <span class="spinner-border spinner-border-sm" role="status"></span>
-            Processing...
-          </span>
+            <span class="d-none align-items-center" id="loading">
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              <span class="text-muted">Processing with AI...</span>
+            </span>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
   <div class="col-lg-5">
-    <div class="card shadow-sm">
+    <div class="card info-card fade-in" style="animation-delay: 0.2s;">
       <div class="card-body p-4">
-        <h2 class="h5">How it works</h2>
-        <ol class="text-muted mb-0">
-          <li>Upload an image</li>
-          <li>LLM identifies the main object</li>
-          <li>LLM asks a few measurement/material questions</li>
-          <li>LLM estimates weight with a range and confidence</li>
-        </ol>
+        <h2 class="h5 fw-bold mb-4">
+          <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          How It Works
+        </h2>
+        
+        <div class="process-steps">
+          <div class="process-step">
+            <strong>Upload an image</strong>
+            <p class="mb-0 small text-muted">Take or upload a clear photo of your object</p>
+          </div>
+          <div class="process-step">
+            <strong>AI identifies the object</strong>
+            <p class="mb-0 small text-muted">Our vision model recognizes what's in the image</p>
+          </div>
+          <div class="process-step">
+            <strong>Answer a few questions</strong>
+            <p class="mb-0 small text-muted">Provide details about size, material, etc.</p>
+          </div>
+          <div class="process-step">
+            <strong>Get your estimate</strong>
+            <p class="mb-0 small text-muted">Receive weight with confidence range</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card mt-4 fade-in" style="animation-delay: 0.3s; background: linear-gradient(135deg, rgba(17, 153, 142, 0.05) 0%, rgba(56, 239, 125, 0.05) 100%); border-left: 4px solid #11998e;">
+      <div class="card-body p-4">
+        <h3 class="h6 fw-bold mb-2">
+          <svg class="me-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#11998e" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          Pro Tips
+        </h3>
+        <ul class="mb-0 small text-muted ps-3">
+          <li>Use good lighting for better results</li>
+          <li>Include a reference object for scale</li>
+          <li>Provide accurate measurements when asked</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -59,5 +161,51 @@
 
 {% block scripts %}
 <script src="{% static 'frontend/js/dashboard.js' %}"></script>
-{% endblock %}
+<script>
+// Drag and drop enhancement
+const uploadZone = document.getElementById('uploadZone');
+const imageInput = document.getElementById('imageInput');
 
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  uploadZone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  });
+});
+
+['dragenter', 'dragover'].forEach(eventName => {
+  uploadZone.addEventListener(eventName, () => {
+    uploadZone.classList.add('dragover');
+  });
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+  uploadZone.addEventListener(eventName, () => {
+    uploadZone.classList.remove('dragover');
+  });
+});
+
+uploadZone.addEventListener('drop', (e) => {
+  const files = e.dataTransfer.files;
+  if (files.length) {
+    imageInput.files = files;
+  }
+});
+
+// Logout button handler
+document.addEventListener('DOMContentLoaded', function() {
+  const btnLogoutDashboard = document.getElementById('btnLogoutDashboard');
+  if (btnLogoutDashboard) {
+    btnLogoutDashboard.addEventListener('click', function() {
+      if (typeof API !== 'undefined' && API.tokens) {
+        API.tokens.clear();
+      }
+      if (typeof updateNav === 'function') {
+        updateNav();
+      }
+      window.location.href = '/login/';
+    });
+  }
+});
+</script>
+{% endblock %}

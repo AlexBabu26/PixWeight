@@ -1,4 +1,4 @@
-# Weight Estimator Using Image Analysis
+# PixWeight - AI-Powered Weight Estimation
 
 A Django + DRF backend for estimating object weight from images using OpenRouter's vision and text models.
 

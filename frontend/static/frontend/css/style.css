@@ -1,8 +1,1656 @@
-body { background: #f7f7f9; }
-.card { border-radius: 12px; }
-footer { background: #ffffff; }
+/* =============================================================================
+   PixWeight - Vibrant Theme
+   A modern, colorful UI with gradients and glass-morphism effects
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   CSS Variables & Color Palette
+   ----------------------------------------------------------------------------- */
+:root {
+  /* Primary Colors - Vibrant Purple/Indigo */
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --primary-color: #667eea;
+  --primary-dark: #5a67d8;
+  --primary-light: #a78bfa;
+  
+  /* Secondary Colors - Teal/Cyan */
+  --secondary-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  --secondary-color: #11998e;
+  --secondary-light: #38ef7d;
+  
+  /* Accent Colors */
+  --accent-pink: #f472b6;
+  --accent-orange: #fb923c;
+  --accent-yellow: #fbbf24;
+  --accent-cyan: #22d3ee;
+  
+  /* Background Gradients - Vibrant & Colorful */
+  --bg-gradient-main: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f472b6 50%, #fb923c 75%, #fbbf24 100%);
+  --bg-gradient-light: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 25%, #fce7f3 50%, #fed7aa 75%, #fef3c7 100%);
+  --bg-gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f472b6 100%);
+  --bg-gradient-auth: linear-gradient(135deg, #667eea 0%, #764ba2 30%, #11998e 60%, #38ef7d 100%);
+  --bg-gradient-dashboard: linear-gradient(135deg, #667eea 0%, #764ba2 20%, #f472b6 40%, #11998e 60%, #38ef7d 80%, #fbbf24 100%);
+  
+  /* Glass-morphism */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-bg-light: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  
+  /* Text Colors */
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-light: #f8fafc;
+  --text-muted: #94a3b8;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(102, 126, 234, 0.1);
+  --shadow-md: 0 4px 20px rgba(102, 126, 234, 0.15);
+  --shadow-lg: 0 10px 40px rgba(102, 126, 234, 0.2);
+  --shadow-glow: 0 0 30px rgba(102, 126, 234, 0.3);
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 30px;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* -----------------------------------------------------------------------------
+   Base Styles & Body
+   ----------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-gradient-light);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-primary);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated background pattern with multiple layers - Optimized */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(102, 126, 234, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(118, 75, 162, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 25% 75%, rgba(17, 153, 142, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 75% 25%, rgba(251, 146, 60, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 50%, rgba(251, 191, 36, 0.15) 0%, transparent 35%);
+  pointer-events: none;
+  z-index: -1;
+  animation: backgroundShift 20s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Animated background movement - Optimized */
+@keyframes backgroundShift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  33% {
+    transform: translate(-10px, 10px) scale(1.02);
+    opacity: 0.95;
+  }
+  66% {
+    transform: translate(10px, -10px) scale(0.98);
+    opacity: 0.97;
+  }
+}
+
+/* Additional animated overlay for more depth - Optimized */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(45deg, transparent 30%, rgba(102, 126, 234, 0.05) 50%, transparent 70%),
+    linear-gradient(-45deg, transparent 30%, rgba(244, 114, 182, 0.05) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  animation: overlayShift 15s linear infinite;
+  will-change: transform;
+}
+
+@keyframes overlayShift {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(50px) translateY(50px);
+  }
+}
+
+/* =============================================================================
+   MODAL OPEN STATE - Complete GPU Optimization to Prevent Freezing
+   The issue: Multiple fixed pseudo-elements with animations + backdrop-filter
+   cause GPU compositing conflicts when Bootstrap modal opens.
+   
+   We use TWO classes:
+   - .modal-preparing: Added BEFORE modal opens (via JS) to pre-disable animations
+   - .modal-open: Added BY Bootstrap when modal is shown
+   ============================================================================= */
+
+/* Hide ALL animated/fixed pseudo-elements when modal is preparing or open */
+body.modal-preparing::before,
+body.modal-preparing::after,
+body.modal-open::before,
+body.modal-open::after {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+/* Hide page-specific pseudo-element backgrounds */
+body.modal-preparing main.container::before,
+body.modal-preparing .min-vh-75::before,
+body.modal-preparing .hero-section::before,
+body.modal-preparing .illustration-card::before,
+body.modal-preparing .dashboard-header::before,
+body.modal-open main.container::before,
+body.modal-open .min-vh-75::before,
+body.modal-open .hero-section::before,
+body.modal-open .illustration-card::before,
+body.modal-open .dashboard-header::before {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+/* Stop card hover animations but DON'T use * selector (causes modal freeze) */
+body.modal-preparing .card::before,
+body.modal-preparing .feature-card::before,
+body.modal-preparing .question-card::before,
+body.modal-preparing .history-item::before,
+body.modal-preparing .metric-card::before,
+body.modal-open .card::before,
+body.modal-open .feature-card::before,
+body.modal-open .question-card::before,
+body.modal-open .history-item::before,
+body.modal-open .metric-card::before {
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+/* Freeze floating/animated elements */
+body.modal-preparing .hero-illustration,
+body.modal-preparing .illustration-card,
+body.modal-open .hero-illustration,
+body.modal-open .illustration-card {
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Disable backdrop-filter on specific elements (causes GPU issues with modal) */
+body.modal-preparing .card,
+body.modal-preparing .navbar,
+body.modal-preparing footer,
+body.modal-open .card,
+body.modal-open .navbar,
+body.modal-open footer {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Disable fade-in animations on page content */
+body.modal-preparing .fade-in,
+body.modal-open .fade-in {
+  animation: none !important;
+}
+
+/* Page-specific background variations */
+body.landing-page {
+  background: var(--bg-gradient-hero);
+}
+
+body.auth-page {
+  background: var(--bg-gradient-auth);
+}
+
+body.dashboard-page {
+  background: var(--bg-gradient-dashboard);
+}
+
+/* Main content area with subtle background */
+main.container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Add colorful background to main sections */
+main.container::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  background: 
+    radial-gradient(circle at 0% 0%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(244, 114, 182, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(17, 153, 142, 0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 30px;
+}
+
+/* -----------------------------------------------------------------------------
+   Navigation Styles
+   ----------------------------------------------------------------------------- */
+.navbar {
+  background: var(--primary-gradient) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+  padding: 0.8rem 0;
+  transition: var(--transition-normal);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: var(--transition-fast);
+}
+
+.navbar-brand:hover {
+  transform: scale(1.02);
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent-cyan);
+  transition: var(--transition-fast);
+  transform: translateX(-50%);
+}
+
+.nav-link:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.nav-link:hover::after {
+  width: 60%;
+}
+
+/* Logout button in nav */
+#btnLogout {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+}
+
+#btnLogout:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
 /* Navigation visibility controlled by JavaScript */
 .auth-only { display: none !important; }
 .guest-only { display: none !important; }
 /* JavaScript will override with inline styles */
 
+/* Mobile nav toggle */
+.navbar-toggler {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.4rem 0.6rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+/* -----------------------------------------------------------------------------
+   Card Styles - Glass-morphism with Colorful Accents
+   ----------------------------------------------------------------------------- */
+.card {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-normal);
+  overflow: hidden;
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    #667eea 0%, 
+    #764ba2 25%, 
+    #f472b6 50%, 
+    #11998e 75%, 
+    #fbbf24 100%);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Feature cards with gradient icons */
+.feature-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--primary-gradient);
+}
+
+.feature-card .icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.feature-card:hover .icon-wrapper {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: var(--shadow-glow);
+}
+
+.feature-card .icon-wrapper svg {
+  width: 32px;
+  height: 32px;
+  stroke: #fff;
+}
+
+/* Info card variant */
+.info-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-left: 4px solid var(--primary-color);
+}
+
+/* Stats card variant */
+.stats-card {
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.stats-card .stats-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* -----------------------------------------------------------------------------
+   Button Styles
+   ----------------------------------------------------------------------------- */
+.btn {
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: var(--transition-slow);
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+/* Primary button */
+.btn-primary {
+  background: var(--primary-gradient);
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--primary-gradient);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Success button */
+.btn-success {
+  background: var(--secondary-gradient);
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+}
+
+.btn-success:hover {
+  background: var(--secondary-gradient);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(17, 153, 142, 0.4);
+}
+
+/* Outline buttons */
+.btn-outline-primary {
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary-gradient);
+  border-color: transparent;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.btn-outline-secondary {
+  color: var(--text-secondary);
+  border: 2px solid #e2e8f0;
+  background: transparent;
+}
+
+.btn-outline-secondary:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--text-primary);
+}
+
+.btn-outline-light {
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
+  color: #fff;
+}
+
+/* Large buttons */
+.btn-lg {
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  border-radius: var(--radius-md);
+}
+
+/* -----------------------------------------------------------------------------
+   Form Styles
+   ----------------------------------------------------------------------------- */
+.form-control {
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  transition: var(--transition-fast);
+  background: #fff;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.form-text {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* File input */
+input[type="file"].form-control {
+  padding: 0.5rem;
+}
+
+input[type="file"].form-control::file-selector-button {
+  background: var(--primary-gradient);
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  margin-right: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition-fast);
+}
+
+input[type="file"].form-control::file-selector-button:hover {
+  opacity: 0.9;
+}
+
+/* -----------------------------------------------------------------------------
+   Alert Styles
+   ----------------------------------------------------------------------------- */
+.alert {
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  font-weight: 500;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  color: #dc2626;
+  border-left: 4px solid #dc2626;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  color: #16a34a;
+  border-left: 4px solid #16a34a;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  color: #0284c7;
+  border-left: 4px solid #0284c7;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  color: #d97706;
+  border-left: 4px solid #d97706;
+}
+
+/* -----------------------------------------------------------------------------
+   Table Styles
+   ----------------------------------------------------------------------------- */
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table thead th {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  padding: 1rem;
+  border: none;
+}
+
+.table tbody tr {
+  transition: var(--transition-fast);
+}
+
+.table tbody tr:hover {
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Status badges in table */
+.badge {
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+}
+
+.badge-pending {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+}
+
+.badge-completed {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #065f46;
+}
+
+/* -----------------------------------------------------------------------------
+   Landing Page / Hero Section
+   ----------------------------------------------------------------------------- */
+.hero-section {
+  position: relative;
+  padding: 4rem 0;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(244, 114, 182, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(17, 153, 142, 0.2) 0%, transparent 60%);
+  animation: rotateBackground 30s linear infinite;
+  z-index: -1;
+}
+
+@keyframes rotateBackground {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+/* Animated illustration */
+.hero-illustration {
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.illustration-card {
+  background: var(--glass-bg-light);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.illustration-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 180deg, var(--primary-color), var(--accent-pink), var(--secondary-color), var(--primary-color));
+  animation: spin 10s linear infinite;
+  opacity: 0.1;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* Page-specific background enhancements */
+.min-vh-75 {
+  position: relative;
+}
+
+.min-vh-75::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, transparent 30%),
+    linear-gradient(225deg, rgba(118, 75, 162, 0.15) 0%, transparent 30%),
+    linear-gradient(45deg, rgba(17, 153, 142, 0.15) 0%, transparent 40%),
+    linear-gradient(315deg, rgba(244, 114, 182, 0.15) 0%, transparent 40%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Dashboard page background */
+.dashboard-header {
+  position: relative;
+}
+
+.dashboard-header::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  right: -100px;
+  height: 300px;
+  background: linear-gradient(135deg, 
+    rgba(102, 126, 234, 0.1) 0%, 
+    rgba(118, 75, 162, 0.1) 20%, 
+    rgba(244, 114, 182, 0.1) 40%, 
+    rgba(17, 153, 142, 0.1) 60%, 
+    rgba(251, 191, 36, 0.1) 80%, 
+    rgba(102, 126, 234, 0.1) 100%);
+  border-radius: 0 0 50% 50%;
+  z-index: -1;
+  filter: blur(40px);
+}
+
+/* Enhanced card backgrounds with colorful top border */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    #667eea 0%, 
+    #764ba2 25%, 
+    #f472b6 50%, 
+    #11998e 75%, 
+    #fbbf24 100%);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+/* Feature cards on landing */
+.feature-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Dashboard Styles
+   ----------------------------------------------------------------------------- */
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.upload-zone {
+  border: 3px dashed #e2e8f0;
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  text-align: center;
+  transition: var(--transition-fast);
+  background: linear-gradient(135deg, 
+    rgba(102, 126, 234, 0.05) 0%, 
+    rgba(118, 75, 162, 0.05) 25%, 
+    rgba(244, 114, 182, 0.05) 50%, 
+    rgba(17, 153, 142, 0.05) 75%, 
+    rgba(251, 191, 36, 0.05) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-zone::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+  z-index: -1;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, 
+    rgba(102, 126, 234, 0.1) 0%, 
+    rgba(118, 75, 162, 0.1) 25%, 
+    rgba(244, 114, 182, 0.1) 50%, 
+    rgba(17, 153, 142, 0.1) 75%, 
+    rgba(251, 191, 36, 0.1) 100%);
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+}
+
+.upload-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: var(--primary-gradient);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+}
+
+.upload-icon svg {
+  width: 40px;
+  height: 40px;
+  stroke: #fff;
+}
+
+/* Process steps */
+.process-steps {
+  counter-reset: step;
+}
+
+.process-step {
+  position: relative;
+  padding-left: 3rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.process-step::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  background: var(--primary-gradient);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Questions Page
+   ----------------------------------------------------------------------------- */
+.question-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.question-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea, #764ba2, #f472b6, #11998e);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.question-card:hover::before {
+  opacity: 1;
+}
+
+.question-card:hover {
+  border-color: rgba(102, 126, 234, 0.3);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%);
+}
+
+.question-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--primary-gradient);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-right: 0.75rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Results Page
+   ----------------------------------------------------------------------------- */
+.result-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f472b6 50%, #11998e 75%, #38ef7d 100%);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+}
+
+.result-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.result-card::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  left: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite reverse;
+}
+
+.result-value {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.result-label {
+  opacity: 0.9;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  text-align: center;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--radius-md);
+  padding: 2px;
+  background: linear-gradient(135deg, #667eea, #764ba2, #f472b6, #11998e, #fbbf24);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.metric-card:hover::before {
+  opacity: 1;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.metric-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.metric-label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Confidence meter */
+.confidence-meter {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: var(--secondary-gradient);
+  border-radius: 4px;
+  transition: width 1s ease-out;
+}
+
+/* -----------------------------------------------------------------------------
+   History Page
+   ----------------------------------------------------------------------------- */
+.history-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.history-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #667eea, #764ba2, #f472b6, #11998e);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.history-item:hover::before {
+  opacity: 1;
+}
+
+.history-item:hover {
+  border-color: rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%);
+}
+
+.history-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.history-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: #fff;
+}
+
+/* -----------------------------------------------------------------------------
+   Profile Page
+   ----------------------------------------------------------------------------- */
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.profile-avatar-text {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.profile-info h2 {
+  margin-bottom: 0.25rem;
+}
+
+.profile-info p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Settings card */
+.settings-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%);
+}
+
+/* -----------------------------------------------------------------------------
+   Footer Styles
+   ----------------------------------------------------------------------------- */
+footer {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 25%, rgba(244, 114, 182, 0.1) 50%, rgba(17, 153, 142, 0.1) 75%, rgba(251, 191, 36, 0.1) 100%);
+  border-top: 2px solid rgba(102, 126, 234, 0.2);
+  margin-top: auto;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea, #764ba2, #f472b6, #11998e, #38ef7d, #fbbf24);
+}
+
+footer .container {
+  color: var(--text-secondary);
+  position: relative;
+  z-index: 1;
+}
+
+/* -----------------------------------------------------------------------------
+   Loading States & Animations
+   ----------------------------------------------------------------------------- */
+.spinner-border {
+  color: var(--primary-color);
+}
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Fade in animation */
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse animation for loading */
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* -----------------------------------------------------------------------------
+   Utility Classes
+   ----------------------------------------------------------------------------- */
+.gradient-text {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-secondary {
+  background: var(--secondary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-primary {
+  background: var(--primary-gradient);
+}
+
+.bg-gradient-secondary {
+  background: var(--secondary-gradient);
+}
+
+.border-gradient {
+  border: 2px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+              var(--primary-gradient) border-box;
+}
+
+.text-gradient {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Divider with gradient */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+  margin: 2rem 0;
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: var(--shadow-glow);
+}
+
+/* Glass effect */
+.glass {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+/* -----------------------------------------------------------------------------
+   Responsive Adjustments
+   ----------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-section {
+    padding: 2rem 0;
+    text-align: center;
+  }
+  
+  .hero-illustration {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .result-value {
+    font-size: 2.5rem;
+  }
+  
+  .card-body {
+    padding: 1.25rem;
+  }
+  
+  .btn-lg {
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+  
+  .hero-title {
+    font-size: 1.75rem;
+  }
+  
+  .d-flex.gap-3 {
+    flex-direction: column;
+    gap: 0.75rem !important;
+  }
+  
+  .d-flex.gap-3 .btn {
+    width: 100%;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Dark Mode Support (optional - can be activated via class)
+   ----------------------------------------------------------------------------- */
+.dark-mode {
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --glass-bg-light: rgba(30, 41, 59, 0.95);
+}
+
+.dark-mode body {
+  background: var(--bg-gradient-main);
+}
+
+.dark-mode .card {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .form-control {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.dark-mode .table thead th {
+  background: rgba(30, 41, 59, 0.8);
+  color: var(--text-secondary);
+}
+
+.dark-mode footer {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* -----------------------------------------------------------------------------
+   Modal Styles - Prevent Freezing Issues
+   Root cause: GPU compositing conflicts between fixed pseudo-elements and modal
+   ----------------------------------------------------------------------------- */
+
+/* Modal must have its OWN stacking context, isolated from page animations */
+.modal {
+  z-index: 1055;
+  /* No backdrop-filter on modal container */
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  /* Force GPU acceleration for smooth transitions */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Modal backdrop - simple, no effects */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  z-index: 1050;
+  /* Use simple opacity transition, not animation */
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Ensure backdrop fade works correctly */
+.modal-backdrop.fade {
+  opacity: 0;
+  transition: opacity 0.15s linear;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+/* Modal dialog positioning */
+.modal-dialog {
+  z-index: 1056;
+  /* Ensure dialog has its own layer */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Modal content styling */
+.modal-content {
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  /* No backdrop-filter */
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  /* Solid background, no transparency */
+  background: #ffffff;
+  position: relative;
+  z-index: 1;
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* CRITICAL: Ensure modal animations are NOT paused */
+.modal.fade .modal-dialog {
+  transition: transform 0.15s ease-out !important;
+  animation-play-state: running !important;
+}
+
+.modal.show .modal-dialog {
+  animation-play-state: running !important;
+}
+
+/* Modal elements should always animate normally */
+.modal *,
+.modal-backdrop {
+  animation-play-state: running !important;
+}
+
+/* =============================================================================
+   CUSTOM MODAL - Pure CSS/JS Implementation (No Bootstrap JS Required)
+   This modal is completely isolated from page animations to prevent freezing
+   ============================================================================= */
+
+/* Modal Overlay - covers entire screen */
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: background-color 0.2s ease, opacity 0.2s ease, visibility 0.2s ease;
+  /* Completely isolate from page rendering */
+  isolation: isolate;
+  contain: layout style paint;
+}
+
+/* When modal is active */
+.custom-modal-overlay.active {
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal container */
+.custom-modal {
+  background: #ffffff;
+  border-radius: var(--radius-lg, 20px);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 450px;
+  max-height: 90vh;
+  overflow: hidden;
+  transform: scale(0.9) translateY(-20px);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  /* Isolate from parent animations */
+  contain: layout style paint;
+}
+
+.custom-modal-overlay.active .custom-modal {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Modal Header */
+.custom-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem 0.75rem;
+  border-bottom: none;
+}
+
+.custom-modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary, #1e293b);
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.custom-modal-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  color: var(--text-secondary, #64748b);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-modal-close:hover {
+  background-color: #f1f5f9;
+  color: var(--text-primary, #1e293b);
+}
+
+/* Modal Body */
+.custom-modal-body {
+  padding: 1rem 1.5rem;
+}
+
+/* Modal Footer */
+.custom-modal-footer {
+  padding: 0.75rem 1.5rem 1.25rem;
+  text-align: center;
+}
+
+/* Prevent body scroll when modal is open */
+body.custom-modal-open {
+  overflow: hidden;
+}
+
+/* When custom modal is open, simplify page rendering */
+body.custom-modal-open::before,
+body.custom-modal-open::after {
+  display: none !important;
+}
+
+body.custom-modal-open main.container::before,
+body.custom-modal-open .min-vh-75::before {
+  display: none !important;
+}
+
+body.custom-modal-open .card,
+body.custom-modal-open .navbar,
+body.custom-modal-open footer {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .custom-modal {
+    max-width: 100%;
+    margin: 0.5rem;
+    border-radius: var(--radius-md, 12px);
+  }
+  
+  .custom-modal-header,
+  .custom-modal-body,
+  .custom-modal-footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
