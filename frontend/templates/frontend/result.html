@@ -1,0 +1,68 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block title %}Result | Weight Estimator{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+          <div>
+            <h1 class="h4 mb-1">Estimated weight</h1>
+            <div class="text-muted" id="objectMeta"></div>
+          </div>
+          <div class="d-flex gap-2">
+            <a class="btn btn-outline-primary btn-sm" id="btnQuestions" href="#">Edit answers</a>
+            <a class="btn btn-outline-secondary btn-sm" href="/history/">History</a>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="alert alert-danger d-none" id="errorBox"></div>
+        <div class="alert alert-info d-none" id="infoBox"></div>
+
+        <div id="resultBox" class="d-none">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="p-3 border rounded">
+                <div class="text-muted small">Estimated</div>
+                <div class="display-6" id="estValue"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 border rounded">
+                <div class="text-muted small">Range</div>
+                <div class="h4 mb-0" id="estRange"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 border rounded">
+                <div class="text-muted small">Confidence</div>
+                <div class="h4 mb-0" id="estConfidence"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <h2 class="h6">Rationale</h2>
+            <p class="text-muted mb-0" id="estRationale"></p>
+          </div>
+        </div>
+
+        <div class="d-none" id="loading">
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+          Loading result...
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'frontend/js/result.js' %}"></script>
+{% endblock %}
+

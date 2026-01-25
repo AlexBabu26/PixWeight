@@ -1,0 +1,83 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block title %}Weight Estimator - AI-Powered Weight Estimation{% endblock %}
+
+{% block content %}
+<div class="row align-items-center min-vh-50 py-5">
+  <div class="col-lg-6">
+    <h1 class="display-4 fw-bold mb-4">Weight Estimator</h1>
+    <p class="lead mb-4">
+      Upload an image of any object, answer a few questions, and get an AI-powered weight estimate 
+      with confidence range.
+    </p>
+    <div class="d-flex gap-3 flex-wrap">
+      <a href="/login/" class="btn btn-primary btn-lg">Get Started</a>
+      <a href="/register/" class="btn btn-outline-primary btn-lg">Sign Up</a>
+    </div>
+  </div>
+  <div class="col-lg-6 text-center">
+    <div class="p-4">
+      <svg width="400" height="300" viewBox="0 0 400 300" class="img-fluid" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="300" fill="#f8f9fa"/>
+        <rect x="50" y="50" width="300" height="200" rx="10" fill="#e9ecef" stroke="#dee2e6" stroke-width="2"/>
+        <circle cx="200" cy="120" r="30" fill="#0d6efd" opacity="0.3"/>
+        <path d="M170 120 L200 90 L230 120 L200 150 Z" fill="#0d6efd"/>
+        <text x="200" y="180" text-anchor="middle" font-family="Arial" font-size="16" fill="#495057">Upload Image</text>
+        <text x="200" y="200" text-anchor="middle" font-family="Arial" font-size="14" fill="#6c757d">AI Analysis</text>
+        <text x="200" y="220" text-anchor="middle" font-family="Arial" font-size="14" fill="#6c757d">Weight Estimate</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mt-5">
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body text-center">
+        <div class="mb-3">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+        </div>
+        <h5 class="card-title">Upload Image</h5>
+        <p class="card-text text-muted">Simply upload a photo of the object you want to estimate the weight for.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body text-center">
+        <div class="mb-3">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h5 class="card-title">Answer Questions</h5>
+        <p class="card-text text-muted">AI will ask you a few questions about dimensions, materials, or other relevant details.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body text-center">
+        <div class="mb-3">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <h5 class="card-title">Get Estimate</h5>
+        <p class="card-text text-muted">Receive an accurate weight estimate with confidence range and detailed analysis.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'frontend/js/landing.js' %}"></script>
+{% endblock %}
+

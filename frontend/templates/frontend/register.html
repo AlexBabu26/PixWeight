@@ -1,0 +1,49 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block title %}Register | Weight Estimator{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-3">Register</h1>
+
+        <div class="alert alert-danger d-none" id="errorBox"></div>
+        <div class="alert alert-success d-none" id="successBox"></div>
+
+        <form id="registerForm">
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input class="form-control" name="username" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email (optional)</label>
+            <input class="form-control" name="email" type="email">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input class="form-control" name="password" type="password" minlength="8" required>
+            <div class="form-text">Minimum 8 characters.</div>
+          </div>
+
+          <button class="btn btn-success w-100" type="submit" id="btnRegister">
+            Create account
+          </button>
+        </form>
+
+        <div class="mt-3 small">
+          Already have an account? <a href="/login/">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'frontend/js/register.js' %}"></script>
+{% endblock %}
+

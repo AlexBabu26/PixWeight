@@ -1,0 +1,51 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block title %}Profile | Weight Estimator{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-3">Profile</h1>
+
+        <div class="alert alert-danger d-none" id="errorBox"></div>
+        <div class="alert alert-success d-none" id="successBox"></div>
+
+        <div class="mb-2 text-muted small">Username</div>
+        <div class="mb-3" id="username"></div>
+
+        <div class="mb-2 text-muted small">Email</div>
+        <div class="mb-3" id="email"></div>
+
+        <form id="profileForm">
+          <div class="mb-3">
+            <label class="form-label">Display name</label>
+            <input class="form-control" name="display_name" id="displayName">
+          </div>
+          <button class="btn btn-primary" type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="h5">Disclaimer & privacy</h2>
+        <ul class="text-muted mb-0">
+          <li>This is an estimation tool; results may be inaccurate.</li>
+          <li>Do not use it for certified shipping or legal measurement requirements.</li>
+          <li>Images and session data are stored in your local database (SQLite) unless you change storage.</li>
+          <li>LLM calls send prompts to OpenRouter; do not upload sensitive images.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'frontend/js/profile.js' %}"></script>
+{% endblock %}
+

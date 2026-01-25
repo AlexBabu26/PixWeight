@@ -1,0 +1,8 @@
+body { background: #f7f7f9; }
+.card { border-radius: 12px; }
+footer { background: #ffffff; }
+/* Navigation visibility controlled by JavaScript */
+.auth-only { display: none !important; }
+.guest-only { display: none !important; }
+/* JavaScript will override with inline styles */
+

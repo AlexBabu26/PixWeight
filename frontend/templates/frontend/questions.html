@@ -1,0 +1,46 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block title %}Questions | Weight Estimator{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+          <div>
+            <h1 class="h4 mb-1">Answer questions</h1>
+            <div class="text-muted" id="objectMeta"></div>
+          </div>
+          <a class="btn btn-outline-secondary btn-sm" href="/">New estimation</a>
+        </div>
+
+        <hr>
+
+        <div class="alert alert-danger d-none" id="errorBox"></div>
+        <div class="alert alert-info d-none" id="infoBox"></div>
+
+        <form id="questionsForm">
+          <div id="questionsContainer"></div>
+
+          <div class="mt-4">
+            <button class="btn btn-success" type="submit" id="btnSubmit">
+              Submit answers and estimate weight
+            </button>
+            <span class="ms-2 d-none" id="loading">
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+              Estimating...
+            </span>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'frontend/js/questions.js' %}"></script>
+{% endblock %}
+

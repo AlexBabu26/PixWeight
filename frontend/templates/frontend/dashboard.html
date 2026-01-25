@@ -1,0 +1,63 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block title %}Dashboard | Weight Estimator{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-2">New estimation</h1>
+        <p class="text-muted mb-4">
+          Upload an image. The system will identify the main object, ask questions, then estimate its weight.
+        </p>
+
+        <div class="alert alert-danger d-none" id="errorBox"></div>
+        <div class="alert alert-info d-none" id="infoBox"></div>
+
+        <form id="startForm">
+          <div class="mb-3">
+            <label class="form-label">Object image</label>
+            <input class="form-control" type="file" name="image" accept="image/*" required>
+            <div class="form-text">Supported: JPEG/PNG/WebP. Size limits apply.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">User hint (optional)</label>
+            <input class="form-control" type="text" name="user_hint"
+                   placeholder="e.g., 'This is a smartphone', 'It is a small suitcase'">
+          </div>
+
+          <button class="btn btn-primary" type="submit" id="btnStart">
+            Upload and generate questions
+          </button>
+
+          <span class="ms-2 d-none" id="loading">
+            <span class="spinner-border spinner-border-sm" role="status"></span>
+            Processing...
+          </span>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="h5">How it works</h2>
+        <ol class="text-muted mb-0">
+          <li>Upload an image</li>
+          <li>LLM identifies the main object</li>
+          <li>LLM asks a few measurement/material questions</li>
+          <li>LLM estimates weight with a range and confidence</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'frontend/js/dashboard.js' %}"></script>
+{% endblock %}
+
