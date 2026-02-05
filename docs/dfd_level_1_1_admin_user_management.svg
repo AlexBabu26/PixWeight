@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 400" width="850" height="400">
+  <style>
+    text { font-family: Arial, sans-serif; font-size: 14px; }
+    .title { font-size: 24px; font-weight: bold; }
+    .entity { fill: white; stroke: black; stroke-width: 2; }
+    .process { fill: white; stroke: black; stroke-width: 2; }
+    .datastore { fill: white; stroke: black; stroke-width: 2; }
+    .arrow { stroke: black; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+    .label { font-size: 11px; }
+  </style>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="black"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="425" y="40" text-anchor="middle" class="title">LEVEL 1.1 ADMIN - USER MANAGEMENT</text>
+  
+  <!-- ADMIN Entity -->
+  <rect x="50" y="170" width="100" height="50" class="entity"/>
+  <text x="100" y="200" text-anchor="middle">ADMIN</text>
+  
+  <!-- Process: User Management -->
+  <ellipse cx="250" cy="195" rx="80" ry="40" class="process"/>
+  <text x="250" y="190" text-anchor="middle">User</text>
+  <text x="250" y="210" text-anchor="middle">Management</text>
+  
+  <!-- Process: View Registered Users -->
+  <ellipse cx="470" cy="120" rx="90" ry="35" class="process"/>
+  <text x="470" y="115" text-anchor="middle">View Registered</text>
+  <text x="470" y="135" text-anchor="middle">Users</text>
+  
+  <!-- Process: View User Profiles -->
+  <ellipse cx="470" cy="210" rx="90" ry="35" class="process"/>
+  <text x="470" y="205" text-anchor="middle">View User</text>
+  <text x="470" y="225" text-anchor="middle">Profiles</text>
+  
+  <!-- Process: Manage User Status -->
+  <ellipse cx="470" cy="300" rx="90" ry="35" class="process"/>
+  <text x="470" y="295" text-anchor="middle">Manage User</text>
+  <text x="470" y="315" text-anchor="middle">Status</text>
+  
+  <!-- Data Store: users (open right box) -->
+  <g>
+    <line x1="680" y1="100" x2="680" y2="140" stroke="black" stroke-width="2"/>
+    <line x1="680" y1="100" x2="800" y2="100" stroke="black" stroke-width="2"/>
+    <line x1="680" y1="140" x2="800" y2="140" stroke="black" stroke-width="2"/>
+    <text x="740" y="125" text-anchor="middle">users</text>
+  </g>
+  
+  <!-- Data Store: profiles (open right box) -->
+  <g>
+    <line x1="680" y1="190" x2="680" y2="230" stroke="black" stroke-width="2"/>
+    <line x1="680" y1="190" x2="800" y2="190" stroke="black" stroke-width="2"/>
+    <line x1="680" y1="230" x2="800" y2="230" stroke="black" stroke-width="2"/>
+    <text x="740" y="215" text-anchor="middle">profiles</text>
+  </g>
+  
+  <!-- Connection: ADMIN to User Management -->
+  <path d="M 150 195 L 170 195" class="arrow"/>
+  
+  <!-- Connection: User Management to View Registered Users -->
+  <path d="M 310 170 L 390 135" class="arrow"/>
+  
+  <!-- Connection: User Management to View User Profiles -->
+  <path d="M 330 200 L 380 205" class="arrow"/>
+  
+  <!-- Connection: User Management to Manage User Status -->
+  <path d="M 310 220 L 390 280" class="arrow"/>
+  
+  <!-- Connection: View Registered Users to users data store -->
+  <path d="M 560 120 L 680 120" class="arrow"/>
+  
+  <!-- Connection: View User Profiles to profiles data store -->
+  <path d="M 560 210 L 680 210" class="arrow"/>
+  
+  <!-- Connection: Manage User Status to users data store -->
+  <path d="M 560 285 L 640 200 L 680 135" class="arrow"/>
+  
+  <!-- Page indicator -->
+  <text x="425" y="380" text-anchor="middle" font-size="12" fill="#666">Page 3 - Admin User Management DFD</text>
+</svg>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <style>
+    text { font-family: Arial, sans-serif; font-size: 14px; }
+    .title { font-size: 24px; font-weight: bold; }
+    .entity { fill: white; stroke: black; stroke-width: 2; }
+    .process { fill: white; stroke: black; stroke-width: 2; }
+    .arrow { stroke: black; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+    .label { font-size: 12px; }
+  </style>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="black"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" class="title">DFD Level - 0</text>
+  
+  <!-- USER Entity (Left) -->
+  <rect x="50" y="200" width="100" height="50" class="entity"/>
+  <text x="100" y="230" text-anchor="middle">USER</text>
+  
+  <!-- Central Process - Weight Estimation System -->
+  <ellipse cx="400" cy="225" rx="150" ry="80" class="process"/>
+  <text x="400" y="215" text-anchor="middle" font-weight="bold">WEIGHT</text>
+  <text x="400" y="235" text-anchor="middle" font-weight="bold">ESTIMATION</text>
+  <text x="400" y="255" text-anchor="middle" font-weight="bold">SYSTEM</text>
+  
+  <!-- ADMIN Entity (Right) -->
+  <rect x="650" y="200" width="100" height="50" class="entity"/>
+  <text x="700" y="230" text-anchor="middle">ADMIN</text>
+  
+  <!-- Data Flow: USER to System (REQUEST) -->
+  <path d="M 150 210 Q 200 150 250 200" class="arrow"/>
+  <text x="200" y="140" text-anchor="middle" class="label">REQUEST</text>
+  <text x="200" y="155" text-anchor="middle" class="label">(Image, Answers)</text>
+  
+  <!-- Data Flow: System to USER (RESPONSE) -->
+  <path d="M 250 250 Q 200 300 150 240" class="arrow"/>
+  <text x="200" y="310" text-anchor="middle" class="label">RESPONSE</text>
+  <text x="200" y="325" text-anchor="middle" class="label">(Weight Estimate)</text>
+  
+  <!-- Data Flow: ADMIN to System (REQUEST) -->
+  <path d="M 650 210 Q 600 150 550 200" class="arrow"/>
+  <text x="600" y="140" text-anchor="middle" class="label">REQUEST</text>
+  <text x="600" y="155" text-anchor="middle" class="label">(Management)</text>
+  
+  <!-- Data Flow: System to ADMIN (RESPONSE) -->
+  <path d="M 550 250 Q 600 300 650 240" class="arrow"/>
+  <text x="600" y="310" text-anchor="middle" class="label">RESPONSE</text>
+  <text x="600" y="325" text-anchor="middle" class="label">(Reports, Data)</text>
+  
+  <!-- Page indicator -->
+  <text x="400" y="480" text-anchor="middle" font-size="12" fill="#666">Page 1 - Context Diagram</text>
+</svg>
