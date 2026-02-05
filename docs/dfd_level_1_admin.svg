@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <style>
+    text { font-family: Arial, sans-serif; font-size: 14px; }
+    .title { font-size: 24px; font-weight: bold; }
+    .entity { fill: white; stroke: black; stroke-width: 2; }
+    .process { fill: white; stroke: black; stroke-width: 2; }
+    .datastore { fill: white; stroke: black; stroke-width: 2; }
+    .arrow { stroke: black; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+    .label { font-size: 11px; }
+  </style>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="black"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" class="title">LEVEL 1 ADMIN</text>
+  
+  <!-- ADMIN Entity -->
+  <rect x="50" y="220" width="100" height="50" class="entity"/>
+  <text x="100" y="250" text-anchor="middle">ADMIN</text>
+  
+  <!-- Login Process -->
+  <ellipse cx="230" cy="245" rx="50" ry="30" class="process"/>
+  <text x="230" y="250" text-anchor="middle">login</text>
+  
+  <!-- Data Store: admins (open right box) -->
+  <g>
+    <line x1="200" y1="130" x2="200" y2="170" stroke="black" stroke-width="2"/>
+    <line x1="200" y1="130" x2="300" y2="130" stroke="black" stroke-width="2"/>
+    <line x1="200" y1="170" x2="300" y2="170" stroke="black" stroke-width="2"/>
+    <text x="250" y="155" text-anchor="middle">admins</text>
+  </g>
+  
+  <!-- Connection: ADMIN to Login -->
+  <path d="M 150 245 L 180 245" class="arrow"/>
+  
+  <!-- Connection: Login to admins (bidirectional) -->
+  <path d="M 230 215 L 230 170" class="arrow"/>
+  <path d="M 250 170 L 250 215" class="arrow"/>
+  
+  <!-- Main Process Circle -->
+  <ellipse cx="400" cy="245" rx="80" ry="50" class="process"/>
+  <text x="400" y="235" text-anchor="middle" font-weight="bold">Weight</text>
+  <text x="400" y="255" text-anchor="middle" font-weight="bold">Estimation</text>
+  <text x="400" y="275" text-anchor="middle" font-weight="bold">System</text>
+  
+  <!-- Connection: Login to Main System -->
+  <path d="M 280 245 L 320 245" class="arrow"/>
+  
+  <!-- Process: User Management -->
+  <ellipse cx="600" cy="150" rx="80" ry="35" class="process"/>
+  <text x="600" y="145" text-anchor="middle">User</text>
+  <text x="600" y="165" text-anchor="middle">Management</text>
+  
+  <!-- Process: Session Management -->
+  <ellipse cx="600" cy="245" rx="80" ry="35" class="process"/>
+  <text x="600" y="240" text-anchor="middle">Session</text>
+  <text x="600" y="260" text-anchor="middle">Management</text>
+  
+  <!-- Process: Reference Data Management -->
+  <ellipse cx="600" cy="340" rx="80" ry="35" class="process"/>
+  <text x="600" y="335" text-anchor="middle">Reference Data</text>
+  <text x="600" y="355" text-anchor="middle">Management</text>
+  
+  <!-- Process: Feedback Management -->
+  <ellipse cx="600" cy="435" rx="80" ry="35" class="process"/>
+  <text x="600" y="430" text-anchor="middle">Feedback</text>
+  <text x="600" y="450" text-anchor="middle">Management</text>
+  
+  <!-- Connection: Main System to Processes -->
+  <path d="M 460 210 L 520 165" class="arrow"/>
+  <path d="M 480 245 L 520 245" class="arrow"/>
+  <path d="M 460 280 L 520 325" class="arrow"/>
+  <path d="M 440 295 L 520 420" class="arrow"/>
+  
+  <!-- Data Store: users (open right box) -->
+  <g>
+    <line x1="760" y1="130" x2="760" y2="170" stroke="black" stroke-width="2"/>
+    <line x1="760" y1="130" x2="860" y2="130" stroke="black" stroke-width="2"/>
+    <line x1="760" y1="170" x2="860" y2="170" stroke="black" stroke-width="2"/>
+    <text x="810" y="155" text-anchor="middle">users</text>
+  </g>
+  
+  <!-- Data Store: estimation_sessions (open right box) -->
+  <g>
+    <line x1="760" y1="225" x2="760" y2="265" stroke="black" stroke-width="2"/>
+    <line x1="760" y1="225" x2="860" y2="225" stroke="black" stroke-width="2"/>
+    <line x1="760" y1="265" x2="860" y2="265" stroke="black" stroke-width="2"/>
+    <text x="810" y="240" text-anchor="middle">estimation</text>
+    <text x="810" y="255" text-anchor="middle">_sessions</text>
+  </g>
+  
+  <!-- Data Store: reference_data (open right box) -->
+  <g>
+    <line x1="760" y1="320" x2="760" y2="360" stroke="black" stroke-width="2"/>
+    <line x1="760" y1="320" x2="860" y2="320" stroke="black" stroke-width="2"/>
+    <line x1="760" y1="360" x2="860" y2="360" stroke="black" stroke-width="2"/>
+    <text x="810" y="345" text-anchor="middle">reference_data</text>
+  </g>
+  
+  <!-- Data Store: weight_feedback (open right box) -->
+  <g>
+    <line x1="760" y1="415" x2="760" y2="455" stroke="black" stroke-width="2"/>
+    <line x1="760" y1="415" x2="860" y2="415" stroke="black" stroke-width="2"/>
+    <line x1="760" y1="455" x2="860" y2="455" stroke="black" stroke-width="2"/>
+    <text x="810" y="440" text-anchor="middle">weight_feedback</text>
+  </g>
+  
+  <!-- Connections: Processes to Data Stores -->
+  <path d="M 680 150 L 760 150" class="arrow"/>
+  <path d="M 680 245 L 760 245" class="arrow"/>
+  <path d="M 680 340 L 760 340" class="arrow"/>
+  <path d="M 680 435 L 760 435" class="arrow"/>
+  
+  <!-- Page indicator -->
+  <text x="450" y="530" text-anchor="middle" font-size="12" fill="#666">Page 2 - Admin Level 1 DFD</text>
+</svg>

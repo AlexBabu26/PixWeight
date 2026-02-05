@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 600" width="950" height="600">
+  <style>
+    text { font-family: Arial, sans-serif; font-size: 14px; }
+    .title { font-size: 24px; font-weight: bold; }
+    .entity { fill: white; stroke: black; stroke-width: 2; }
+    .process { fill: white; stroke: black; stroke-width: 2; }
+    .datastore { fill: white; stroke: black; stroke-width: 2; }
+    .arrow { stroke: black; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+    .label { font-size: 11px; }
+  </style>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="black"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="475" y="40" text-anchor="middle" class="title">LEVEL 1 USER</text>
+  
+  <!-- USER Entity -->
+  <rect x="50" y="260" width="100" height="50" class="entity"/>
+  <text x="100" y="290" text-anchor="middle">USER</text>
+  
+  <!-- Login Process -->
+  <ellipse cx="220" cy="285" rx="50" ry="30" class="process"/>
+  <text x="220" y="290" text-anchor="middle">login</text>
+  
+  <!-- Main Process: Weight Estimation System -->
+  <ellipse cx="400" cy="285" rx="90" ry="60" class="process"/>
+  <text x="400" y="270" text-anchor="middle" font-weight="bold">WEIGHT</text>
+  <text x="400" y="290" text-anchor="middle" font-weight="bold">ESTIMATION</text>
+  <text x="400" y="310" text-anchor="middle" font-weight="bold">SYSTEM</text>
+  
+  <!-- Process: Upload Image -->
+  <ellipse cx="620" cy="80" rx="75" ry="30" class="process"/>
+  <text x="620" y="85" text-anchor="middle">upload image</text>
+  
+  <!-- Process: Create Session -->
+  <ellipse cx="620" cy="160" rx="75" ry="30" class="process"/>
+  <text x="620" y="165" text-anchor="middle">create session</text>
+  
+  <!-- Process: Answer Questions -->
+  <ellipse cx="620" cy="240" rx="75" ry="30" class="process"/>
+  <text x="620" y="235" text-anchor="middle">answer</text>
+  <text x="620" y="255" text-anchor="middle">questions</text>
+  
+  <!-- Process: View Estimate -->
+  <ellipse cx="620" cy="320" rx="75" ry="30" class="process"/>
+  <text x="620" y="325" text-anchor="middle">view estimate</text>
+  
+  <!-- Process: View History -->
+  <ellipse cx="620" cy="400" rx="75" ry="30" class="process"/>
+  <text x="620" y="405" text-anchor="middle">view history</text>
+  
+  <!-- Process: Submit Feedback -->
+  <ellipse cx="620" cy="480" rx="75" ry="30" class="process"/>
+  <text x="620" y="475" text-anchor="middle">submit</text>
+  <text x="620" y="495" text-anchor="middle">feedback</text>
+  
+  <!-- Process: View Profile -->
+  <ellipse cx="620" cy="555" rx="75" ry="30" class="process"/>
+  <text x="620" y="560" text-anchor="middle">view profile</text>
+  
+  <!-- Data Store: uploaded_images (open right box) -->
+  <g>
+    <line x1="780" y1="60" x2="780" y2="100" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="60" x2="910" y2="60" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="100" x2="910" y2="100" stroke="black" stroke-width="2"/>
+    <text x="845" y="85" text-anchor="middle">uploaded_images</text>
+  </g>
+  
+  <!-- Data Store: estimation_sessions (open right box) -->
+  <g>
+    <line x1="780" y1="140" x2="780" y2="180" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="140" x2="910" y2="140" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="180" x2="910" y2="180" stroke="black" stroke-width="2"/>
+    <text x="845" y="155" text-anchor="middle">estimation</text>
+    <text x="845" y="170" text-anchor="middle">_sessions</text>
+  </g>
+  
+  <!-- Data Store: questions & answers (open right box) -->
+  <g>
+    <line x1="780" y1="220" x2="780" y2="260" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="220" x2="910" y2="220" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="260" x2="910" y2="260" stroke="black" stroke-width="2"/>
+    <text x="845" y="245" text-anchor="middle">questions_answers</text>
+  </g>
+  
+  <!-- Data Store: weight_estimates (open right box) -->
+  <g>
+    <line x1="780" y1="300" x2="780" y2="340" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="300" x2="910" y2="300" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="340" x2="910" y2="340" stroke="black" stroke-width="2"/>
+    <text x="845" y="325" text-anchor="middle">weight_estimates</text>
+  </g>
+  
+  <!-- Data Store: weight_feedback (open right box) -->
+  <g>
+    <line x1="780" y1="460" x2="780" y2="500" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="460" x2="910" y2="460" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="500" x2="910" y2="500" stroke="black" stroke-width="2"/>
+    <text x="845" y="485" text-anchor="middle">weight_feedback</text>
+  </g>
+  
+  <!-- Data Store: users (open right box) -->
+  <g>
+    <line x1="780" y1="535" x2="780" y2="575" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="535" x2="910" y2="535" stroke="black" stroke-width="2"/>
+    <line x1="780" y1="575" x2="910" y2="575" stroke="black" stroke-width="2"/>
+    <text x="845" y="560" text-anchor="middle">users</text>
+  </g>
+  
+  <!-- Connection: USER to Login -->
+  <path d="M 150 285 L 170 285" class="arrow"/>
+  
+  <!-- Connection: Login to Main System -->
+  <path d="M 270 285 L 310 285" class="arrow"/>
+  
+  <!-- Connections: Main System to Processes -->
+  <path d="M 465 240 L 545 100" class="arrow"/>
+  <path d="M 475 245 L 545 165" class="arrow"/>
+  <path d="M 490 270 L 545 245" class="arrow"/>
+  <path d="M 490 300 L 545 315" class="arrow"/>
+  <path d="M 475 325 L 545 390" class="arrow"/>
+  <path d="M 460 340 L 545 465" class="arrow"/>
+  <path d="M 440 345 L 545 545" class="arrow"/>
+  
+  <!-- Connections: Processes to Data Stores -->
+  <path d="M 695 80 L 780 80" class="arrow"/>
+  <path d="M 695 160 L 780 160" class="arrow"/>
+  <path d="M 695 240 L 780 240" class="arrow"/>
+  <path d="M 695 320 L 780 320" class="arrow"/>
+  <path d="M 695 400 L 740 380 L 780 320" class="arrow"/>
+  <path d="M 695 480 L 780 480" class="arrow"/>
+  <path d="M 695 555 L 780 555" class="arrow"/>
+  
+  <!-- Page indicator -->
+  <text x="475" y="590" text-anchor="middle" font-size="12" fill="#666">Page 5 - User Level 1 DFD</text>
+</svg>
